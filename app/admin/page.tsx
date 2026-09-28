@@ -1,10 +1,10 @@
 import { redirect } from "next/navigation";
-import { createClient } from "../../lib/supabase/client";
+import { createAdminServerClient } from "../supabase-server";
 
 export const dynamic = "force-dynamic";
 
 export default async function AdminPage() {
-  const supabase = await createClient();
+  const supabase = await createAdminServerClient();
   const { data: { user } } = await supabase.auth.getUser();
 
   if (!user) redirect("/admin/login");
