@@ -1,6 +1,5 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { createAdminClient } from "@/lib/supabase/admin";
 
 export const dynamic = "force-dynamic";
 
@@ -10,23 +9,20 @@ export default async function AdminPage() {
 
   if (!user) redirect("/admin/login");
 
-  const adminEmail = process.env.ADMIN_EMAIL?.trim().toLowerCase();
-  if (!adminEmail || user.email?.toLowerCase() !== adminEmail) {
+  const { data: adminUser } = await supabase
+    .from("admin_users")
+    .select("user_id")
+    .eq("user_id", user.id)
+    .maybeSingle();
+
+  if (!adminUser) {
     await supabase.auth.signOut();
     redirect("/admin/login?error=not_admin");
   }
 
-  let count = 0;
-  let dbError = "";
-
-  try {
-    const admin = createAdminClient();
-    const result = await admin.from("chat_messages").select("*", { count: "exact", head: true });
-    count = result.count ?? 0;
-    if (result.error) dbError = result.error.message;
-  } catch (error) {
-    dbError = error instanceof Error ? error.message : "Admin database configuration is missing.";
-  }
+  const { count, error } = await supabase
+    .from("chat_messages")
+    .select("*", { count: "exact", head: true });
 
   return (
     <main className="adminShell">
@@ -35,8 +31,8 @@ export default async function AdminPage() {
           <div><h1>Orken AI — Admin</h1><p>{user.email}</p></div>
           <form action="/api/admin/logout" method="post"><button>Log out</button></form>
         </div>
-        <div className="stat"><strong>{count}</strong><span>Total saved messages</span></div>
-        {dbError && <div className="error" style={{marginTop: 16}}>{dbError}</div>}
+        <div className="stat"><strong>{count ?? 0}</strong><span>Total saved messages</span></div>
+        {error && <div className="error" style={{marginTop: 16}}>{error.message}</div>}
       </section>
     </main>
   );
