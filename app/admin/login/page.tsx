@@ -16,14 +16,21 @@ export default function AdminLogin() {
     e.preventDefault();
     setLoading(true);
     setError("");
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
+
+    const { error } = await supabase.auth.signInWithPassword({
+      email: email.trim(),
+      password,
+    });
+
     if (error) {
       setError(error.message);
       setLoading(false);
       return;
     }
-    router.push("/admin");
-    router.refresh();
+
+    // Use a full navigation so the fresh Supabase auth cookies are
+    // definitely sent to the server-rendered admin dashboard.
+    window.location.assign("/admin");
   }
 
   return (
@@ -32,10 +39,26 @@ export default function AdminLogin() {
         <img className="logoImage" src="/logo.svg" alt="Orken AI logo" />
         <h1>Admin Login</h1>
         <p>Sign in to manage Orken AI.</p>
-        <input type="email" placeholder="Admin email" value={email} onChange={e => setEmail(e.target.value)} required />
-        <input type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} required />
+        <input
+          type="email"
+          placeholder="Admin email"
+          value={email}
+          onChange={e => setEmail(e.target.value)}
+          autoComplete="email"
+          required
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={e => setPassword(e.target.value)}
+          autoComplete="current-password"
+          required
+        />
         {error && <div className="error">{error}</div>}
-        <button disabled={loading}>{loading ? "Signing in..." : "Sign in"}</button>
+        <button type="submit" disabled={loading}>
+          {loading ? "Signing in..." : "Sign in"}
+        </button>
       </form>
     </main>
   );
