@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { createAdminServerClient } from "../supabase-server";
 
 export const dynamic = "force-dynamic";
+// VERCEL_FIX_20260928: no @/lib/supabase/server import
 
 export default async function AdminPage() {
   const supabase = await createAdminServerClient();
