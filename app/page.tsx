@@ -6,7 +6,7 @@ type Message = { role: "user" | "assistant"; content: string };
 
 export default function Home() {
   const [messages, setMessages] = useState<Message[]>([
-    { role: "assistant", content: "Hi! I’m AI Chatbot 1. How can I help you today?" },
+    { role: "assistant", content: "Hi! I’m Orken AI. How can I help you today?" },
   ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
@@ -44,8 +44,8 @@ export default function Home() {
     <main className="shell">
       <section className="chat">
         <header className="header">
-          <img className="logoImage" src="/logo.svg" alt="AI Chatbot logo" />
-          <div><h1>AI Chatbot 1</h1><p>Powered by Groq</p></div>
+          <img className="logoImage" src="/logo.svg" alt="Orken AI logo" />
+          <div><h1>Orken AI</h1><p>Powered by Groq</p></div>
           <span className="status">Online</span>
         </header>
 
@@ -61,7 +61,7 @@ export default function Home() {
         </div>
 
         <form className="composer" onSubmit={sendMessage}>
-          <input value={input} onChange={(e) => setInput(e.target.value)} placeholder="Message AI Chatbot 1..." aria-label="Message" />
+          <input value={input} onChange={(e) => setInput(e.target.value)} placeholder="Message Orken AI..." aria-label="Message" />
           <button disabled={loading || !input.trim()}>{loading ? "..." : "Send"}</button>
         </form>
       </section>
