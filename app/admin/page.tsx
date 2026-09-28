@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { createClient } from "../../lib/supabase/server"; // relative import avoids deployment alias issues
+import { createClient } from "../../lib/supabase/server";
 
 export const dynamic = "force-dynamic";
 
