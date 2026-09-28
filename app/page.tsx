@@ -44,7 +44,7 @@ export default function Home() {
     <main className="shell">
       <section className="chat">
         <header className="header">
-          <div className="logo">AI</div>
+          <img className="logoImage" src="/logo.svg" alt="AI Chatbot logo" />
           <div><h1>AI Chatbot 1</h1><p>Powered by Groq</p></div>
           <span className="status">Online</span>
         </header>
