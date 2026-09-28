@@ -46,7 +46,10 @@ export default function Home() {
         <header className="header">
           <img className="logoImage" src="/logo.svg" alt="Orken AI logo" />
           <div><h1>Orken AI</h1><p>Powered by Groq</p></div>
-          <span className="status">Online</span>
+          <div className="headerActions">
+            <span className="status">Online</span>
+            <a className="adminLogin" href="/admin/login">Admin Login</a>
+          </div>
         </header>
 
         <div className="messages">
