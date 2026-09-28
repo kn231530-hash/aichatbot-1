@@ -15,3 +15,7 @@ Never commit `.env.local` or any Groq secret key.
 ## Deploy
 
 Deploy the repository to Vercel and add the same environment variables in the Vercel project settings.
+
+## Vercel build
+
+The project uses direct relative imports for Supabase server/client files and does not require a webpack alias. Deploy the `main` branch and use a fresh deployment after pulling the latest commit.
