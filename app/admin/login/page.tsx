@@ -29,9 +29,9 @@ export default function AdminLogin() {
   return (
     <main className="adminShell">
       <form className="loginCard" onSubmit={login}>
-        <div className="logo">AI</div>
+        <img className="logoImage" src="/logo.svg" alt="Orken AI logo" />
         <h1>Admin Login</h1>
-        <p>Sign in to manage AI Chatbot 1.</p>
+        <p>Sign in to manage Orken AI.</p>
         <input type="email" placeholder="Admin email" value={email} onChange={e => setEmail(e.target.value)} required />
         <input type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} required />
         {error && <div className="error">{error}</div>}
