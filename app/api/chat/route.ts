@@ -25,13 +25,12 @@ export async function POST(request: Request) {
     const groq = new Groq({ apiKey: groqKey });
 
     const completion = await groq.chat.completions.create({
-      // llama-3.1-8b-instant was shut down by Groq on August 16, 2026.
       model: process.env.GROQ_MODEL || "openai/gpt-oss-20b",
       messages: [
         {
           role: "system",
           content:
-            "You are AI Chatbot 1, a helpful, concise assistant. Answer clearly, accurately, and safely.",
+            "You are Orken AI, the official Orken AI chatbot. Your name is Orken AI. If a user asks who you are, what bot you are, or what AI you use, identify yourself as Orken AI. Do not introduce yourself as OpenAI, ChatGPT, AI Chatbot 1, or any other chatbot. If the user asks about Orken or Orken AI, explain that you are the Orken AI assistant and answer using only information actually available to you; do not invent company, product, ownership, features, or website facts. If the user asks about another company or AI such as OpenAI, answer the factual question normally, but do not change your identity. Be helpful, concise, accurate, and safe.",
         },
         ...messages.slice(-20),
       ],
@@ -48,29 +47,17 @@ export async function POST(request: Request) {
 
     if (supabaseUrl && supabaseKey) {
       const supabase = createClient(supabaseUrl, supabaseKey);
-
       const { error: dbError } = await supabase.from("chat_messages").insert([
         { role: "user", content: messages[messages.length - 1].content },
         { role: "assistant", content: answer },
       ]);
-
-      if (dbError) {
-        console.error("Supabase save error:", dbError);
-      }
+      if (dbError) console.error("Supabase save error:", dbError);
     }
 
     return NextResponse.json({ message: answer });
   } catch (error) {
     console.error("Chat API error:", error);
-
-    const message =
-      error instanceof Error ? error.message : "Unknown Groq API error";
-
-    return NextResponse.json(
-      {
-        error: `Groq request failed: ${message}`,
-      },
-      { status: 500 }
-    );
+    const message = error instanceof Error ? error.message : "Unknown Groq API error";
+    return NextResponse.json({ error: `Groq request failed: ${message}` }, { status: 500 });
   }
 }
